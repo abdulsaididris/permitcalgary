@@ -65,14 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch(error => {
-                    if (isLocal) {
-                        result.innerHTML = "<strong>Local Browser Restriction:</strong> To submit forms from a local file, please upload to Netlify first, or verify your Web3Forms key is activated.";
-                    } else {
-                        result.innerHTML = "Network error. Please try again or contact us directly at 780-479-3285.";
-                    }
-                    result.style.color = "#dc3545";
-                    result.style.display = "block";
-                    console.error('Submission Error:', error);
+                    console.warn('AJAX Blocked (likely local file). Falling back to standard submission.');
+                    // FAIL-SAFE: If AJAX is blocked, submit the form natively.
+                    form.submit(); 
                 })
                 .finally(() => {
                     submitBtn.disabled = false;
