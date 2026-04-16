@@ -1,116 +1,108 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ─── Header scroll effect ────────────────────────────
     const header = document.querySelector('.header');
-    const heroQuoteForm = document.getElementById('hero-quote-form');
+    if (header) {
+        window.addEventListener('scroll', function () {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    }
 
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    // ─── Smooth scroll ────────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
             }
         });
     });
 
-    // Web3Forms - iframe technique (works locally AND on server)
-    const web3Forms = document.querySelectorAll('form[action*="web3forms.com"]');
+    // ─── Web3Forms Submission ─────────────────────────
+    // Works on HTTPS (Netlify). On local file:// browsers block fetch — 
+    // deploy to Netlify to fully verify.
+    const W3F_KEY = '469313db-e21e-45e9-bea5-107ae2c0be44';
 
-    web3Forms.forEach(form => {
-        const result = form.querySelector('#form-result');
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn ? submitBtn.innerText : 'Submit';
+    document.querySelectorAll('form').forEach(function (form) {
+        var resultDiv = form.querySelector('#form-result');
+        if (!resultDiv) return; // skip forms without a result container
 
-        // Create a hidden iframe to capture the form POST response
-        const iframeName = 'web3forms_iframe_' + Math.random().toString(36).substr(2, 9);
-        const iframe = document.createElement('iframe');
-        iframe.name = iframeName;
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        // Point form to the hidden iframe (native POST - works on file://)
-        form.setAttribute('target', iframeName);
+            var btn = form.querySelector('button[type="submit"]');
+            var btnText = btn ? btn.innerText : '';
+            if (btn) { btn.disabled = true; btn.innerText = 'Sending...'; }
 
-        // When iframe loads (i.e. form was submitted), show success
-        let submitted = false;
-        iframe.addEventListener('load', function() {
-            if (!submitted) return; // ignore initial empty load
-            // Show green success message
-            result.innerHTML = 'Request Received';
-            result.style.color = '#28a745';
-            result.style.fontWeight = '700';
-            result.style.fontSize = '1rem';
-            result.style.display = 'block';
-            result.style.marginBottom = '1rem';
-            form.reset();
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalText;
-            }
-        });
+            // Build JSON payload
+            var data = {};
+            new FormData(form).forEach(function (val, key) { data[key] = val; });
+            data['access_key'] = W3F_KEY;
 
-        form.addEventListener('submit', function(e) {
-            submitted = true;
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerText = 'Sending...';
-            }
-            // Allow the native form POST to proceed into the iframe
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function (res) { return res.json(); })
+            .then(function (json) {
+                if (json.success) {
+                    resultDiv.textContent = 'Request Received';
+                    resultDiv.style.cssText = 'display:block;color:#28a745;font-weight:700;font-size:1rem;margin-bottom:1rem;';
+                    form.reset();
+                } else {
+                    resultDiv.textContent = json.message || 'Something went wrong.';
+                    resultDiv.style.cssText = 'display:block;color:#dc3545;font-weight:600;margin-bottom:1rem;';
+                }
+            })
+            .catch(function () {
+                resultDiv.textContent = 'Could not send. Please email a.said@lagroupofcompanies.ca directly.';
+                resultDiv.style.cssText = 'display:block;color:#dc3545;font-weight:600;margin-bottom:1rem;';
+            })
+            .finally(function () {
+                if (btn) { btn.disabled = false; btn.innerText = btnText; }
+            });
         });
     });
 
-    // Mobile menu toggle (simple version)
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const nav = document.querySelector('.nav');
-
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
+    // ─── Mobile menu ──────────────────────────────────
+    var mobileToggle = document.querySelector('.mobile-toggle');
+    var nav = document.querySelector('.nav');
+    if (mobileToggle && nav) {
+        mobileToggle.addEventListener('click', function () {
             nav.classList.toggle('active');
             mobileToggle.classList.toggle('active');
             document.body.classList.toggle('no-scroll');
         });
+        document.querySelectorAll('.nav a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                nav.classList.remove('active');
+                mobileToggle.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+        });
     }
 
-    // Close menu when clicking a link
-    document.querySelectorAll('.nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            nav.classList.remove('active');
-            mobileToggle.classList.remove('active');
-            document.body.classList.remove('no-scroll');
-        });
-    });
-
-    // Add intersection observer for reveal animations
-    const revealElements = document.querySelectorAll('.service-card, .step, .trust-stat');
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    // ─── Scroll reveal animations ─────────────────────
+    var revealEls = document.querySelectorAll('.service-card, .step, .trust-stat');
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
-                revealObserver.unobserve(entry.target);
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });
 
-    revealElements.forEach(el => {
+    revealEls.forEach(function (el) {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'all 0.6s ease-out';
-        revealObserver.observe(el);
+        observer.observe(el);
     });
+
 });
