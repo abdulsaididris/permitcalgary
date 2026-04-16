@@ -120,13 +120,12 @@
                         <h3>Direct Inquiry</h3>
                         <p>Fill out the form below and one of our experts will contact you within 24 hours.</p>
                         <form
-                            id="contact-form"
                             action="https://api.web3forms.com/submit"
                             method="POST"
-                            target="w3f_frame"
+                            target="_blank"
                         >
                             <input type="hidden" name="access_key" value="469313db-e21e-45e9-bea5-107ae2c0be44">
-                            <input type="hidden" name="subject" value="New Permit Edmonton Contact Inquiry">
+                            <input type="hidden" name="subject"    value="New Contact — PermitEdmonton.ca">
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                                 <input type="text"  name="name"  placeholder="Full Name"      required>
                                 <input type="email" name="email" placeholder="Email Address"  required>
@@ -143,7 +142,6 @@
                             <textarea name="message" placeholder="Please describe your project or questions in detail..." style="height:150px;"></textarea>
                             <button type="submit" class="btn btn-gold full-width btn-large">Send Your Message</button>
                         </form>
-                        <div id="form-result" style="display:none;"></div>
                     </div>
                 </div>
                 <div class="contact-info-wrapper">

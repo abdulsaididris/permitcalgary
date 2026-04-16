@@ -1,37 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ─── Create the shared hidden iframe that catches all Web3Forms POSTs ───
-    var iframe = document.createElement('iframe');
-    iframe.name = 'w3f_frame';
-    iframe.id   = 'w3f_frame';
-    iframe.style.cssText = 'display:none;width:0;height:0;border:none;position:absolute;';
-    document.body.appendChild(iframe);
-
-    // ─── Attach submit handler to every form targeting w3f_frame ────────────
-    document.querySelectorAll('form[target="w3f_frame"]').forEach(function (form) {
-        var resultDiv = document.getElementById('form-result');
-        var btn       = form.querySelector('button[type="submit"]');
-        var btnLabel  = btn ? btn.innerText : 'Submit';
-        var fired     = false;
-
-        // When iframe loads after a POST → show success
-        iframe.addEventListener('load', function () {
-            if (!fired) return;
-            fired = false;
-            if (resultDiv) {
-                resultDiv.textContent   = 'Request Received';
-                resultDiv.style.cssText = 'display:block;color:#28a745;font-weight:700;font-size:1rem;margin:0 0 1rem;';
-            }
-            form.reset();
-            if (btn) { btn.disabled = false; btn.innerText = btnLabel; }
-        });
-
-        form.addEventListener('submit', function () {
-            fired = true;
-            if (btn) { btn.disabled = true; btn.innerText = 'Sending...'; }
-        });
-    });
-
     // ─── Header scroll effect ────────────────────────────────────────────────
     var header = document.querySelector('.header');
     if (header) {

@@ -53,15 +53,14 @@
                         <h3>Quick Consultation</h3>
                         <p>Tell us about your Edmonton project</p>
                         <form
-                            id="hero-quote-form"
                             action="https://api.web3forms.com/submit"
                             method="POST"
-                            target="w3f_frame"
+                            target="_blank"
                         >
                             <input type="hidden" name="access_key" value="469313db-e21e-45e9-bea5-107ae2c0be44">
-                            <input type="hidden" name="subject" value="New Permit Edmonton Inquiry">
-                            <input type="text"  name="name"         placeholder="Your Name"     required>
-                            <input type="email" name="email"        placeholder="Email Address" required>
+                            <input type="hidden" name="subject"    value="New Inquiry — PermitEdmonton.ca">
+                            <input type="text"  name="name"  placeholder="Your Name"     required>
+                            <input type="email" name="email" placeholder="Email Address" required>
                             <select name="project_type" required>
                                 <option value="" disabled selected>Project Type</option>
                                 <option value="deck">Deck / Garage / Backyard Suite</option>
@@ -74,7 +73,6 @@
                             <textarea name="message" placeholder="Tell us more about your project goals..."></textarea>
                             <button type="submit" class="btn btn-gold full-width">Get a Free Quote</button>
                         </form>
-                        <div id="form-result" style="display:none;"></div>
                     </div>
                 </div>
             </div>
