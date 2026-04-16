@@ -28,52 +28,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Web3Forms Multi-Form Handler
+    // Web3Forms - iframe technique (works locally AND on server)
     const web3Forms = document.querySelectorAll('form[action*="web3forms.com"]');
-    
+
     web3Forms.forEach(form => {
         const result = form.querySelector('#form-result');
-        
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.innerText : 'Submit';
+
+        // Create a hidden iframe to capture the form POST response
+        const iframeName = 'web3forms_iframe_' + Math.random().toString(36).substr(2, 9);
+        const iframe = document.createElement('iframe');
+        iframe.name = iframeName;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        // Point form to the hidden iframe (native POST - works on file://)
+        form.setAttribute('target', iframeName);
+
+        // When iframe loads (i.e. form was submitted), show success
+        let submitted = false;
+        iframe.addEventListener('load', function() {
+            if (!submitted) return; // ignore initial empty load
+            // Show green success message
+            result.innerHTML = 'Request Received';
+            result.style.color = '#28a745';
+            result.style.fontWeight = '700';
+            result.style.fontSize = '1rem';
+            result.style.display = 'block';
+            result.style.marginBottom = '1rem';
+            form.reset();
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        });
+
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button');
-            const originalText = submitBtn.innerText;
-            
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Processing...";
-
-            const isLocal = window.location.protocol === 'file:';
-
-            fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(async (response) => {
-                    let json = await response.json();
-                    if (response.status == 200) {
-                        result.innerHTML = "Request received, we will respond ASAP";
-                        result.style.color = "#28a745"; 
-                        result.style.display = "block";
-                        result.style.marginBottom = "1rem";
-                        result.style.fontWeight = "600";
-                        form.reset();
-                    } else {
-                        result.innerHTML = json.message || "Submission failed.";
-                        result.style.color = "#dc3545";
-                        result.style.display = "block";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    result.innerHTML = "Network Error: Submit via Netlify to see the inline success message.";
-                    result.style.color = "#dc3545";
-                    result.style.display = "block";
-                })
-                .finally(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = originalText;
-                });
+            submitted = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Sending...';
+            }
+            // Allow the native form POST to proceed into the iframe
         });
     });
 
