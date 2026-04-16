@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(async (response) => {
                     let json = await response.json();
                     if (response.status == 200) {
-                        result.innerHTML = "Your request has been received, we will get back to shortly. Thanks";
+                        result.innerHTML = "Request received, we will respond ASAP";
                         result.style.color = "#28a745"; 
                         result.style.display = "block";
                         result.style.marginBottom = "1rem";
@@ -65,9 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch(error => {
-                    console.warn('AJAX Blocked (likely local file). Falling back to standard submission.');
-                    // FAIL-SAFE: If AJAX is blocked, submit the form natively.
-                    form.submit(); 
+                    console.error('Error:', error);
+                    result.innerHTML = "Network Error: Submit via Netlify to see the inline success message.";
+                    result.style.color = "#dc3545";
+                    result.style.display = "block";
                 })
                 .finally(() => {
                     submitBtn.disabled = false;
