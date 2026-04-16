@@ -35,8 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         heroQuoteForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(heroQuoteForm);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
 
             const submitBtn = heroQuoteForm.querySelector('button');
             const originalText = submitBtn.innerText;
@@ -45,35 +43,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: json
+                    body: formData
                 })
                 .then(async (response) => {
                     let json = await response.json();
                     if (response.status == 200) {
                         result.innerHTML = "Your request has been received, we will get back to shortly. Thanks";
                         result.style.color = "#28a745"; // Green
+                        result.style.display = "block";
                         result.style.marginBottom = "1rem";
                         result.style.fontWeight = "600";
                         heroQuoteForm.reset();
                     } else {
                         console.log(response);
-                        result.innerHTML = json.message;
+                        result.innerHTML = json.message || "Submission failed. Please check your connection.";
                         result.style.color = "#dc3545"; // Red
+                        result.style.display = "block";
                     }
                 })
                 .catch(error => {
-                    console.log(error);
-                    result.innerHTML = "Something went wrong!";
+                    console.error('Error:', error);
+                    result.innerHTML = "Network error. Please try again or contact us directly.";
+                    result.style.color = "#dc3545";
+                    result.style.display = "block";
                 })
-                .then(function() {
+                .finally(() => {
                     submitBtn.disabled = false;
                     submitBtn.innerText = originalText;
                     setTimeout(() => {
-                        result.style.display = "none";
+                        // Only hide if it was successful, otherwise keep error visible for a bit
+                        if (result.style.color === "rgb(40, 167, 69)") {
+                            result.style.display = "none";
+                        }
                     }, 5000);
                 });
         });

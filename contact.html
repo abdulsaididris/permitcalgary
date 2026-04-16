@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | PermitEdmonton.ca</title>
+    <meta name="description" content="Get in touch with Edmonton's local permit experts. Request a free quote, ask a question, or book a consultation for your residential or commercial project.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-hero {
+            padding: 10rem 0 5rem;
+            background: linear-gradient(rgba(4, 30, 66, 0.9), rgba(4, 30, 66, 0.9)), url('hero-bg.png');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .contact-section {
+            padding: 8rem 0;
+            background-color: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+        }
+
+        .contact-info-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .info-card {
+            padding: 2.5rem;
+            background: var(--off-white);
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .info-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .info-card a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .map-container {
+            margin-top: 3rem;
+            height: 300px;
+            background-color: var(--primary);
+            background-image: linear-gradient(45deg, rgba(255, 76, 0, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 76, 0, 0.1) 50%, rgba(255, 76, 0, 0.1) 75%, transparent 75%, transparent);
+            background-size: 50px 50px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header scrolled">
+        <div class="container">
+            <div class="logo">
+                <a href="/" class="logo-link">
+                    <div class="logo-main">PERMIT<span class="accent">EDMONTON</span></div>
+                    <div class="logo-tagline">Edmonton's Premier Permit Partners</div>
+                </a>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="/#services">Services</a></li>
+                    <li><a href="/#process">Our Process</a></li>
+                    <li><a href="/#about">About</a></li>
+                    <li><a href="/#insights">Insights</a></li>
+                    <li><a href="contact.html" class="btn btn-outline">Free Quote</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="contact-hero">
+        <div class="container">
+            <h1>Get in Touch</h1>
+            <p>Ready to start your permit power play? We're here to help.</p>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-form-wrapper">
+                    <div class="form-card" style="box-shadow: var(--shadow);">
+                        <h3>Direct Inquiry</h3>
+                        <p>Fill out the form below and one of our experts will contact you within 24 hours.</p>
+                        <form id="hero-quote-form" action="https://api.web3forms.com/submit" method="POST">
+                            <input type="hidden" name="access_key" value="469313db-e21e-45e9-bea5-107ae2c0be44">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <input type="text" name="name" placeholder="Full Name" required>
+                                <input type="email" name="email" placeholder="Email Address" required>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <input type="tel" name="phone" placeholder="Phone Number">
+                                <select name="project_category" required>
+                                    <option value="" disabled selected>Project Category</option>
+                                    <option value="residential">Residential</option>
+                                    <option value="commercial">Commercial</option>
+                                    <option value="consulting">Consulting Only</option>
+                                </select>
+                            </div>
+                            <textarea name="message" placeholder="Please describe your project or questions in detail..." style="height: 150px;"></textarea>
+                            <div id="form-result"></div>
+                            <button type="submit" class="btn btn-gold full-width btn-large">Send Your Message</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="contact-info-wrapper">
+                    <div class="contact-info-cards">
+                        <div class="info-card">
+                            <h4>Phone</h4>
+                            <p><a href="tel:7804793285">780-479-3285</a></p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Email</h4>
+                            <p><a href="mailto:a.said@lagroupofcompanies.ca">a.said@lagroupofcompanies.ca</a></p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Location</h4>
+                            <p>Edmonton, Alberta</p>
+                        </div>
+                    </div>
+                    <div class="map-container">Serving Edmonton & Area</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col about">
+                    <div class="logo">
+                        <span class="logo-text">PERMIT<span class="accent">EDMONTON</span></span>
+                    </div>
+                    <p>Dedicated to helping Edmontonians navigate the complex world of building and development permits with ease and professionalism.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#services">Services</a></li>
+                        <li><a href="/#process">Process</a></li>
+                        <li><a href="/#about">About Us</a></li>
+                        <li><a href="/#insights">Insights</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <p>Edmonton, AB</p>
+                    <p>Phone: <a href="tel:7804793285">780-479-3285</a></p>
+                    <p>Email: <a href="mailto:a.said@lagroupofcompanies.ca">a.said@lagroupofcompanies.ca</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PermitEdmonton.ca. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
