@@ -28,36 +28,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submission handling
+    // Form submission handling (Web3Forms)
     if (heroQuoteForm) {
-        heroQuoteForm.addEventListener('submit', (e) => {
+        const result = document.getElementById('form-result');
+
+        heroQuoteForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Get form data
             const formData = new FormData(heroQuoteForm);
-            const data = Object.fromEntries(formData);
-            
-            // Show success message (visual feedback)
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
             const submitBtn = heroQuoteForm.querySelector('button');
             const originalText = submitBtn.innerText;
-            
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Sending...';
-            
-            setTimeout(() => {
-                submitBtn.innerText = 'Message Sent Successfully!';
-                submitBtn.style.backgroundColor = '#28a745';
-                
-                heroQuoteForm.reset();
-                
-                setTimeout(() => {
+            submitBtn.innerText = "Please wait...";
+
+            fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        result.innerHTML = "Your request has been received, we will get back to shortly. Thanks";
+                        result.style.color = "#28a745"; // Green
+                        result.style.marginBottom = "1rem";
+                        result.style.fontWeight = "600";
+                        heroQuoteForm.reset();
+                    } else {
+                        console.log(response);
+                        result.innerHTML = json.message;
+                        result.style.color = "#dc3545"; // Red
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    result.innerHTML = "Something went wrong!";
+                })
+                .then(function() {
                     submitBtn.disabled = false;
                     submitBtn.innerText = originalText;
-                    submitBtn.style.backgroundColor = '';
-                }, 3000);
-            }, 1500);
-            
-            console.log('Form submission:', data);
+                    setTimeout(() => {
+                        result.style.display = "none";
+                    }, 5000);
+                });
         });
     }
 
