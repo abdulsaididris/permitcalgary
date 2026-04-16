@@ -28,18 +28,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submission handling (Web3Forms)
-    if (heroQuoteForm) {
-        const result = document.getElementById('form-result');
-
-        heroQuoteForm.addEventListener('submit', function(e) {
+    // Web3Forms Multi-Form Handler
+    const web3Forms = document.querySelectorAll('form[action*="web3forms.com"]');
+    
+    web3Forms.forEach(form => {
+        const result = form.querySelector('#form-result');
+        
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            const formData = new FormData(heroQuoteForm);
-
-            const submitBtn = heroQuoteForm.querySelector('button');
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button');
             const originalText = submitBtn.innerText;
+            
             submitBtn.disabled = true;
-            submitBtn.innerText = "Please wait...";
+            submitBtn.innerText = "Processing...";
+
+            const isLocal = window.location.protocol === 'file:';
 
             fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
@@ -49,36 +53,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     let json = await response.json();
                     if (response.status == 200) {
                         result.innerHTML = "Your request has been received, we will get back to shortly. Thanks";
-                        result.style.color = "#28a745"; // Green
+                        result.style.color = "#28a745"; 
                         result.style.display = "block";
                         result.style.marginBottom = "1rem";
                         result.style.fontWeight = "600";
-                        heroQuoteForm.reset();
+                        form.reset();
                     } else {
-                        console.log(response);
-                        result.innerHTML = json.message || "Submission failed. Please check your connection.";
-                        result.style.color = "#dc3545"; // Red
+                        result.innerHTML = json.message || "Submission failed.";
+                        result.style.color = "#dc3545";
                         result.style.display = "block";
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    result.innerHTML = "Network error. Please try again or contact us directly.";
+                    if (isLocal) {
+                        result.innerHTML = "<strong>Local Browser Restriction:</strong> To submit forms from a local file, please upload to Netlify first, or verify your Web3Forms key is activated.";
+                    } else {
+                        result.innerHTML = "Network error. Please try again or contact us directly at 780-479-3285.";
+                    }
                     result.style.color = "#dc3545";
                     result.style.display = "block";
+                    console.error('Submission Error:', error);
                 })
                 .finally(() => {
                     submitBtn.disabled = false;
                     submitBtn.innerText = originalText;
-                    setTimeout(() => {
-                        // Only hide if it was successful, otherwise keep error visible for a bit
-                        if (result.style.color === "rgb(40, 167, 69)") {
-                            result.style.display = "none";
-                        }
-                    }, 5000);
                 });
         });
-    }
+    });
 
     // Mobile menu toggle (simple version)
     const mobileToggle = document.querySelector('.mobile-toggle');
