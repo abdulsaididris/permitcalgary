@@ -57,4 +57,27 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(el);
     });
 
+    // ─── FAQ Accordion ─────────────────────────────────────────────────────────
+    document.querySelectorAll('.faq-question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var expanded = this.getAttribute('aria-expanded') === 'true';
+            var answerId = this.id.replace('faq-q', 'faq-a');
+            var answer   = document.getElementById(answerId);
+
+            // Collapse all open items
+            document.querySelectorAll('.faq-question').forEach(function (q) {
+                q.setAttribute('aria-expanded', 'false');
+            });
+            document.querySelectorAll('.faq-answer').forEach(function (a) {
+                a.classList.remove('open');
+            });
+
+            // Open clicked item if it was closed
+            if (!expanded && answer) {
+                this.setAttribute('aria-expanded', 'true');
+                answer.classList.add('open');
+            }
+        });
+    });
+
 });
