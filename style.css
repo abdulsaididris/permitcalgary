@@ -184,7 +184,7 @@ h1, h2, h3, h4 {
     position: relative;
     display: flex;
     align-items: center;
-    padding-top: 180px; /* Further increased offset to push everything down */
+    padding-top: 120px; /* Reduced offset to bring content higher */
     color: var(--white);
 }
 
@@ -205,7 +205,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-text {
-    margin-top: 4rem; /* Specific push down for the headline */
+    margin-top: 2rem; /* Reduced push down for the headline */
 }
 
 .hero-subtitle {
@@ -253,7 +253,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-form-container {
-    margin-top: 4rem; /* Specific push down for the form */
+    margin-top: 2rem; /* Reduced push down for the form */
 }
 
 /* Form Card */
