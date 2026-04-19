@@ -825,6 +825,7 @@ h1, h2, h3, h4 {
     .hero-actions { justify-content: center; }
     .trust-bar .container { flex-direction: column; gap: 2rem; }
     .footer-grid { grid-template-columns: 1fr; text-align: center; }
+    .section-header h2 { font-size: 2rem; }
 }
 
 @media (max-width: 768px) {
