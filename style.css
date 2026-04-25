@@ -509,6 +509,7 @@ h1, h2, h3, h4 {
     background-position: center;
 }
 
+#blog-img-red-tape { background-image: url('blog-zoning.png'); } /* Reusing zoning image as placeholder */
 #blog-img-zoning { background-image: url('blog-zoning.png'); }
 #blog-img-housing { background-image: url('blog-housing.png'); }
 #blog-img-commercial { background-image: url('blog-commercial.png'); }
