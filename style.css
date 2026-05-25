@@ -288,8 +288,32 @@ h1, h2, h3, h4 {
 }
 
 .form-card textarea {
-    height: 70px; /* Reduced height */
+    height: 100px; /* Increased from 70px for better user experience */
     resize: none;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.form-row input,
+.form-row select {
+    margin-bottom: 0;
+}
+
+@media (max-width: 576px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .form-row input,
+    .form-row select {
+        margin-bottom: 0;
+    }
 }
 
 .full-width {

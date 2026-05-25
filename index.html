@@ -165,17 +165,22 @@
                         >
                             <input type="hidden" name="access_key" value="ade3380d-0caf-4141-bace-a22c62123580">
                             <input type="hidden" name="subject"    value="New Inquiry — PermitCalgary.ca">
-                            <input type="text"  name="name"  placeholder="Your Name"     required>
-                            <input type="email" name="email" placeholder="Email Address" required>
-                            <select name="project_type" required>
-                                <option value="" disabled selected>Project Type</option>
-                                <option value="deck">Deck / Garage / Backyard Suite</option>
-                                <option value="addition">Addition / Major Renovation</option>
-                                <option value="basement">Basement / Secondary Suite</option>
-                                <option value="commercial">Commercial / Change of Use</option>
-                                <option value="consulting">Zoning &amp; Code Consulting</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <div class="form-row">
+                                <input type="text"  name="name"  placeholder="Full Name"     required>
+                                <input type="email" name="email" placeholder="Email Address" required>
+                            </div>
+                            <div class="form-row">
+                                <input type="tel"   name="phone" placeholder="Phone Number" required>
+                                <select name="project_type" required>
+                                    <option value="" disabled selected>Project Type</option>
+                                    <option value="deck">Deck / Garage / Backyard Suite</option>
+                                    <option value="addition">Addition / Major Renovation</option>
+                                    <option value="basement">Basement / Secondary Suite</option>
+                                    <option value="commercial">Commercial / Change of Use</option>
+                                    <option value="consulting">Zoning &amp; Code Consulting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
                             <textarea name="message" placeholder="Tell us more about your project goals..."></textarea>
                             <button type="submit" class="btn btn-gold full-width">Get a Free Quote</button>
                         </form>
